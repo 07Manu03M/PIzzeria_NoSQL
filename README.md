@@ -1,6 +1,6 @@
 # Actividad Pizzeria NoSQL
 
-## CONSULTA
+# 1. CONSULTA
 ### Que es una base de datos NoSQL?
 
 - Una base de datos NoSQL (Not Only SQL) es un tipo de base de datos que proporciona un mecanismo para el almacenamiento y recuperación de datos que no requiere un modelo tabular tradicional como las bases de datos relacionales (SQL). Las bases de datos NoSQL están diseñadas para manejar grandes volúmenes de datos distribuidos, no estructurados o semi-estructurados, y son especialmente útiles en aplicaciones modernas como big data, tiempo real, y escalabilidad horizontal en la nube.
@@ -33,8 +33,6 @@
   - Ideal para aplicaciones ágiles y modernas como apps web, móviles, IoT, big data, etc.
 
 ### ¿Qué diferencia hay entre una base de datos relacional (como MySQL) y una base de datos documental como MongoDB?
-
-# Diferencias entre MySQL y MongoDB
 
 A continuación se presentan las principales diferencias entre una base de datos relacional (como **MySQL**) y una base de datos documental (como **MongoDB**):
 
@@ -97,7 +95,6 @@ MongoDB es mejor cuando se necesita flexibilidad, escalabilidad y rapidez en el 
 
 ### Que son Documentos y Colecciones en MongoDB
 
-# 📘 Documentos y Colecciones en MongoDB
 
 MongoDB organiza los datos usando **documentos** y **colecciones**, que forman la base de su modelo de datos flexible y escalable.
 
@@ -126,9 +123,44 @@ Un **documento** es la unidad básica de almacenamiento en MongoDB. Es similar a
   "intereses": ["música", "cine", "deportes"]
 }
 ```
+# 2. 📁 Colecciones propuestas
+
+Definimos las siguientes colecciones para representar los elementos principales del negocio:
+
+| Colección      | Descripción                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| `clientes`     | Guarda los datos personales de los clientes (nombre, dirección, etc.).     |
+| `productos`    | Contiene todos los tipos de productos: pizzas, panzarottis, bebidas, etc.  |
+| `ingredientes` | Lista de ingredientes disponibles para personalizar productos.             |
+| `combos`       | Agrupa varios productos con un precio especial.                            |
+| `pedidos`      | Guarda los pedidos con los productos solicitados, el cliente y el total.   |
+
+---
+
+### 🧠 Decisiones de modelado
+
+MongoDB permite estructurar los datos como documentos JSON, lo que nos permite optimizar la estructura para consultas rápidas y desarrollo ágil:
+
+- **Productos en los pedidos**: Se copian directamente (no se usa referencia) para mantener los precios, tamaños y adiciones tal como estaban en el momento del pedido.
+- **Cliente en los pedidos**: Se guarda una versión reducida del cliente dentro del pedido (nombre y teléfono) para facilitar consultas históricas y evitar inconsistencias si el cliente cambia sus datos después.
+- **Combos**: Usan referencias a productos por ID, ya que los combos se arman a partir de productos existentes.
+- **Ingredientes**: Se guardan como lista de strings en cada producto o pedido personalizado. No se referencian por ID para no complicar la estructura, ya que no requieren búsquedas complejas.
+
+---
+
+### 🔍 Estructura y tipo de datos utilizados
+
+| Campo                     | Tipo de dato              | Ubicación                       |
+|--------------------------|---------------------------|----------------------------------|
+| `ingredientes`           | Lista de strings           | En productos y personalizaciones|
+| `productos` en pedido    | Lista de objetos           | En pedidos                      |
+| `cliente` en pedido      | Objeto incrustado          | En pedidos                      |
+| `productos` en combo     | Lista de IDs (referencia)  | En combos                       |
+| `tamaño`, `precio`, etc. | Strings / números simples  | En productos y pedidos          |
 
 
-## 📁 Colecciones Propuestas
+
+# 📁 3. Crear ejemplos de documentos JSON
 clientes
 
 productos (pizzas, panzarottis, bebidas, postres, adiciones)
@@ -238,4 +270,32 @@ Editar
   "total": 43000,
   "estado": "En preparación"
 }
+```
+
+# 💭 4. Reflexión grupal
+
+### 🧠 ¿Qué fue lo más difícil de imaginar sin tablas?
+
+Lo más difícil fue dejar de pensar en términos de relaciones estrictas como en MySQL. Estamos tan acostumbrados a usar claves foráneas, normalizar datos y evitar redundancia, que al principio nos costó aceptar que duplicar información (como los datos del cliente dentro del pedido) puede ser algo positivo en MongoDB. 
+
+También fue un reto decidir cuándo incrustar datos y cuándo referenciar, ya que eso no siempre es obvio.
+
+---
+
+### ✅ ¿Qué nos gustó del enfoque con documentos?
+
+Nos gustó la flexibilidad que ofrece MongoDB para modelar la información. El hecho de poder guardar toda la información de un pedido (cliente, productos, adiciones, etc.) en un solo documento facilita mucho la lectura y evita hacer varias "joins".
+
+Además, como MongoDB usa JSON, nos pareció muy intuitivo, ya que se parece a cómo se manejan los datos en JavaScript, que es un lenguaje que ya dominamos.
+
+---
+
+### ❓ ¿Qué dudas nos surgieron?
+
+Tuvimos dudas sobre:
+
+- Cuándo es mejor incrustar datos y cuándo referenciarlos.
+- Qué pasa si un producto cambia de precio, ¿cómo mantener la integridad del pedido anterior?
+- Si hay límites de tamaño para los documentos y qué tan grande puede crecer un documento sin que afecte el rendimiento.
+- Si existen buenas prácticas para modelar colecciones cuando los datos pueden cambiar con el tiempo (por ejemplo, si se actualiza un combo o se elimina un ingrediente).
 
