@@ -167,7 +167,7 @@ Editar
   "personalizable": false
 }
 ```
-##🧂 Colección: ingredientes
+## 🧂 Colección: ingredientes
 Lista de ingredientes disponibles (útil para validar las adiciones o personalizaciones).
 
 json
