@@ -114,7 +114,6 @@ Un **documento** es la unidad básica de almacenamiento en MongoDB. Es similar a
 - Cada documento tiene un campo `_id` único por defecto.
 
 ### ✅ Ejemplo de documento:
-```json
 {
   "_id": ObjectId("60f7e36e8d3e3a2b3c4f1e56"),
   "nombre": "Ana Gómez",
@@ -128,7 +127,7 @@ Un **documento** es la unidad básica de almacenamiento en MongoDB. Es similar a
 }
 
 
-##📁 Colecciones Propuestas
+## 📁 Colecciones Propuestas
 clientes
 
 productos (pizzas, panzarottis, bebidas, postres, adiciones)
@@ -139,8 +138,8 @@ ingredientes
 
 pedidos
 
-##🧾 Ejemplo de documentos y decisiones de modelado
-##📦 Colección: productos
+## 🧾 Ejemplo de documentos y decisiones de modelado
+## 📦 Colección: productos
 Agrupamos todos los tipos de productos en una sola colección, diferenciándolos por tipo.
 
 json
@@ -176,7 +175,7 @@ Editar
   "nombre": "Champiñones",
   "tipo": "vegetal"
 }
-##🧾 Colección: combos
+## 🧾 Colección: combos
 Los combos contienen productos (referenciados por ID) y un precio especial.
 
 json
@@ -188,7 +187,7 @@ Editar
   "productos": ["prod1", "prod2", "prod3"],
   "precio_combo": 45000
 }
-##👤 Colección: clientes
+## 👤 Colección: clientes
 json
 Copiar
 Editar
@@ -199,7 +198,7 @@ Editar
   "direccion": "Cra 12 #45-78",
   "email": "laura@example.com"
 }
-##📦 Colección: pedidos
+## 📦 Colección: pedidos
 Aquí se guarda el resumen completo del pedido. Incluye detalles embebidos como cliente y productos (para conservar el estado del pedido en el tiempo incluso si luego cambian los precios o ingredientes).
 
 json
