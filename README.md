@@ -127,3 +127,108 @@ Un **documento** es la unidad básica de almacenamiento en MongoDB. Es similar a
   "intereses": ["música", "cine", "deportes"]
 }
 
+
+##📁 Colecciones Propuestas
+clientes
+
+productos (pizzas, panzarottis, bebidas, postres, adiciones)
+
+combos
+
+ingredientes
+
+pedidos
+
+##🧾 Ejemplo de documentos y decisiones de modelado
+##📦 Colección: productos
+Agrupamos todos los tipos de productos en una sola colección, diferenciándolos por tipo.
+
+json
+Copiar
+Editar
+{
+  "_id": "prod1",
+  "nombre": "Pizza Hawaiana",
+  "tipo": "pizza",
+  "precio": 32000,
+  "ingredientes": ["queso", "piña", "jamón"],
+  "tamaño": "mediana",
+  "personalizable": true
+}
+json
+Copiar
+Editar
+{
+  "_id": "prod2",
+  "nombre": "Coca-Cola 400ml",
+  "tipo": "bebida",
+  "precio": 5000,
+  "personalizable": false
+}
+##🧂 Colección: ingredientes
+Lista de ingredientes disponibles (útil para validar las adiciones o personalizaciones).
+
+json
+Copiar
+Editar
+{
+  "_id": "ing1",
+  "nombre": "Champiñones",
+  "tipo": "vegetal"
+}
+##🧾 Colección: combos
+Los combos contienen productos (referenciados por ID) y un precio especial.
+
+json
+Copiar
+Editar
+{
+  "_id": "combo1",
+  "nombre": "Combo Pareja",
+  "productos": ["prod1", "prod2", "prod3"],
+  "precio_combo": 45000
+}
+##👤 Colección: clientes
+json
+Copiar
+Editar
+{
+  "_id": "cli1",
+  "nombre": "Laura Gómez",
+  "telefono": "3124567890",
+  "direccion": "Cra 12 #45-78",
+  "email": "laura@example.com"
+}
+##📦 Colección: pedidos
+Aquí se guarda el resumen completo del pedido. Incluye detalles embebidos como cliente y productos (para conservar el estado del pedido en el tiempo incluso si luego cambian los precios o ingredientes).
+
+json
+Copiar
+Editar
+{
+  "_id": "pedido1",
+  "cliente": {
+    "_id": "cli1",
+    "nombre": "Laura Gómez",
+    "telefono": "3124567890"
+  },
+  "tipo": "para llevar",
+  "fecha": "2025-05-29T15:30:00Z",
+  "productos": [
+    {
+      "_id": "prod1",
+      "nombre": "Pizza Hawaiana",
+      "tamaño": "grande",
+      "precio": 38000,
+      "adiciones": ["Champiñones", "Tocineta"]
+    },
+    {
+      "_id": "prod2",
+      "nombre": "Coca-Cola 400ml",
+      "precio": 5000
+    }
+  ],
+  "total": 43000,
+  "estado": "En preparación"
+}
+
